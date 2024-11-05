@@ -53,6 +53,7 @@ RUN pip install torch>=1.10.1 \
 
 
 WORKDIR /root
+RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 RUN pip install --upgrade pip && \
     git clone --recursive --branch v0.2.4 https://github.com/facebookresearch/habitat-sim.git && \
     cd habitat-sim && \
@@ -94,3 +95,7 @@ RUN pip install git+https://github.com/naokiyokoyama/frontier_exploration.git \
                 git+https://github.com/naokiyokoyama/depth_camera_filtering \
                 git+https://github.com/naokiyokoyama/bd_spot_wrapper.git \
                 git+https://github.com/IDEA-Research/GroundingDINO.git
+
+
+RUN git clone https://github.com/KumarRobotics/vlfm.git && \
+    cd vlfm && pip install . 
