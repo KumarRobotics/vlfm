@@ -54,24 +54,6 @@ RUN pip install torch>=1.10.1 \
 
 WORKDIR /root
 RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
-RUN pip install --upgrade pip && \
-    git clone --recursive --branch v0.2.4 https://github.com/facebookresearch/habitat-sim.git && \
-    cd habitat-sim && \
-    python3 -m pip install -r requirements.txt && \ 
-    python3 setup.py install --headless --with-cuda --bullet 
-
-RUN git clone --branch v0.2.4 https://github.com/facebookresearch/habitat-lab.git #&& \
-    cd habitat-lab/habitat-lab && \
-    pip install -r requirements.txt && \
-    cd ../../ && \
-    pip install -r habitat_baselines/habitat_baselines/rl/requirements.txt && \
-    pip install -r habitat_baselines/habitat_baselines/rl/ddppo/requirements.txt && \
-    python3 habitat-lab/habitat-lab/setup.py develop --all
-
-RUN cd habitat-lab && \
-    wget http://dl.fbaipublicfiles.com/habitat/habitat-test-scenes.zip && \
-    unzip habitat-test-scenes.zip 
-
 RUN apt update && apt install -y python3-tk
 RUN pip install pip==24.0
 RUN pip install easydict transformers tensorboardX jsonlines dtw fastdtw torchvision openai-clip gdown gym==0.21.0 
@@ -94,7 +76,29 @@ RUN pip install git+https://github.com/naokiyokoyama/frontier_exploration.git \
                 git+https://github.com/ChaoningZhang/MobileSAM.git \
                 git+https://github.com/naokiyokoyama/depth_camera_filtering \
                 git+https://github.com/naokiyokoyama/bd_spot_wrapper.git \
-                git+https://github.com/IDEA-Research/GroundingDINO.git
+                git+https://github.com/IDEA-Research/GroundingDINO.git \
+		hydra-core
+
+RUN pip install --upgrade pip && \
+    git clone --recursive --branch v0.2.4 https://github.com/facebookresearch/habitat-sim.git && \
+    cd habitat-sim && \
+    python3 -m pip install -r requirements.txt && \ 
+    python3 setup.py install --headless --with-cuda --bullet 
+
+RUN git clone --branch v0.2.4 https://github.com/facebookresearch/habitat-lab.git #&& \
+    cd habitat-lab/habitat-lab && \
+    pip install -r requirements.txt && \
+    cd ../../ && \
+    pip install -r habitat_baselines/habitat_baselines/rl/requirements.txt && \
+    pip install -r habitat_baselines/habitat_baselines/rl/ddppo/requirements.txt && \
+    python3 habitat-lab/habitat-lab/setup.py develop --all
+    
+RUN cd habitat-lab/habitat-lab/ && python3 -m pip install .
+RUN cd habitat-lab/habitat-baselines && python3 -m pip install . 
+
+RUN cd habitat-lab && \
+    wget http://dl.fbaipublicfiles.com/habitat/habitat-test-scenes.zip && \
+    unzip habitat-test-scenes.zip 
 
 
 RUN git clone https://github.com/KumarRobotics/vlfm.git && \
