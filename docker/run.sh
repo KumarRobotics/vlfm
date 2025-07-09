@@ -1,1 +1,1 @@
-docker run --gpus=all --rm --net=host -it vlfm bash
+docker run -it --privileged -e DISPLAY -v /dev/bus/usb:/deb/bus/usb -v /tmp/.X11-unix/:/tmp/.X11-unix/ -v /home/${USER}/.Xauthority:/home/${USER}/.Xauthority --ipc=host --gpus all -v /KR_data/2024_VLA_data:/KR_data/2024_VLA_data vlfm:mp3d
